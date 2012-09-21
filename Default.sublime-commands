@@ -1,0 +1,6 @@
+[
+    {
+        "caption": "CI Codeintel Helper: Create IDE helper",
+        "command": "generate_codeintel_helper"
+    }
+]
