@@ -5,6 +5,9 @@ import sublime_plugin
 
 class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
     def run(self):
+        # get base ide helper
+        base_helper = open('ci_ide_helper.php').read()
+
         # get root folder
         folders = self.window.folders()
         for folder in folders:
@@ -25,9 +28,6 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
                 if f[-4:] == '.php':
                     models.append(f[:-4])
 
-        # get base ide helper
-        contents = open('ci_ide_helper.php').read()
-
         # add in user models
         settings = sublime.load_settings('CI Codeintel Helper.sublime-settings')
         strip_model = settings.get('strip_model')
@@ -39,7 +39,7 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
                 model_var = model
 
             rep = ' * @property %s $%s    User Defined model\n */\nc' % (model_class, model_var)
-            contents = contents.replace(' */\nc', rep)
+            contents = base_helper.replace(' */\nc', rep)
 
         # write helper file
         with open(os.path.join(self.root, 'ci_ide_helper.php'), 'w') as f:
