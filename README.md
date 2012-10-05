@@ -17,3 +17,15 @@ If you haven't got Package Control installed you will need to make a clone of th
 [package_control]: http://wbond.net/sublime_packages/package_control
 
 If you find error or wathever just fork it and send me a pull request.
+
+## Usage ##
+
+While working on a Codeigniter project, invoke the command palette and run
+
+    CI Codeintel Helper: Create IDE helper
+
+this should create a ci_ide_helper.php file in the base of your CI project to help SublimeCodeIntel offer completion.
+
+## Options ##
+
+- strip_model [true | false (default)] - add user models to helper with _model taken off the @property variable name
