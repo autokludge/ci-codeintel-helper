@@ -1,4 +1,4 @@
-<?php  die('This file is not really here!');
+contents = """<?php  die('This file is not really here!');
 
 /**
  * ------------- DO NOT UPLOAD THIS FILE TO LIVE SERVER ---------------------
@@ -97,3 +97,4 @@ class CI_Controller{}
  * @property CI_Security $security                Security Class, xss, csrf, etc...
  */
 class CI_Model{}
+"""

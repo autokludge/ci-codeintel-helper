@@ -1,18 +1,22 @@
 import os
 import sublime
 import sublime_plugin
+import ci_ide_helper
 
 
 class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
     def run(self):
         # get base ide helper
-        base_helper = open('ci_ide_helper.php').read()
+        print 'start plugin'
+
+        # content = open('ci_ide_helper.php').read()
+        content = ci_ide_helper.contents
 
         # get root folder
         folders = self.window.folders()
         for folder in folders:
             contents = os.listdir(folder)
-            if 'application' in contents and 'system' in contents and 'index.php' in contents:
+            if 'index.php' in contents:
                 self.root = folder
                 break
         if not hasattr(self, 'root'):
@@ -29,6 +33,9 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
                     models.append(f[:-4])
 
         # add in user models
+        rep = ' * ==============START USER DEFINED MODELS===============\n */\nc'
+        content = content.replace(' */\nc', rep)
+
         settings = sublime.load_settings('CI Codeintel Helper.sublime-settings')
         strip_model = settings.get('strip_model')
         for model in models:
@@ -39,8 +46,9 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
                 model_var = model
 
             rep = ' * @property %s $%s    User Defined model\n */\nc' % (model_class, model_var)
-            contents = base_helper.replace(' */\nc', rep)
+            content = content.replace(' */\nc', rep)
 
+        print contents
         # write helper file
         with open(os.path.join(self.root, 'ci_ide_helper.php'), 'w') as f:
-            f.write(contents)
+            f.write(content)
