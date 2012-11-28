@@ -58,7 +58,6 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
             rep = ' * @property %s $%s    User Defined model\n */\nc' % (model_class, model_var)
             content = content.replace(' */\nc', rep)
 
-        print contents
         # write helper file
         with open(os.path.join(self.root, 'ci_ide_helper.php'), 'w') as f:
             f.write(content)
