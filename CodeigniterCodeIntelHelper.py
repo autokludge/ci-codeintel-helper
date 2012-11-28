@@ -13,16 +13,16 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
         content = ci_ide_helper.contents
 
         # get root folder
-        folders = self.window.folders()
-        for folder in folders:
-            contents = os.listdir(folder)
-            if 'index.php' in contents:
-                self.root = folder
+        top_folders = self.window.folders()
+        for top_folder in top_folders:
+            top_folder_contents = os.listdir(top_folder)
+            if 'index.php' in top_folder_contents:
+                self.root = top_folder
                 break
 
             else:
-                for content in contents:
-                    dir = folder + '/' + content + '/'
+                for secondary_folder in top_folder_contents:
+                    dir = top_folder + '/' + secondary_folder + '/'
 
                     if os.path.isdir(dir):
                         dir_contents = os.listdir(dir)
