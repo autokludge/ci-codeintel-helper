@@ -13,12 +13,22 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
         content = ci_ide_helper.contents
 
         # get root folder
-        folders = self.window.folders()
-        for folder in folders:
-            contents = os.listdir(folder)
-            if 'index.php' in contents:
-                self.root = folder
+        top_folders = self.window.folders()
+        for top_folder in top_folders:
+            top_folder_contents = os.listdir(top_folder)
+            if 'index.php' in top_folder_contents:
+                self.root = top_folder
                 break
+
+            else:
+                for secondary_folder in top_folder_contents:
+                    dir = top_folder + '/' + secondary_folder + '/'
+
+                    if os.path.isdir(dir):
+                        dir_contents = os.listdir(dir)
+                        if 'index.php' in dir_contents:
+                            self.root = dir
+                            break
         if not hasattr(self, 'root'):
             sublime.status_message('Could not find project root')
             return
@@ -48,7 +58,6 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
             rep = ' * @property %s $%s    User Defined model\n */\nc' % (model_class, model_var)
             content = content.replace(' */\nc', rep)
 
-        print contents
         # write helper file
         with open(os.path.join(self.root, 'ci_ide_helper.php'), 'w') as f:
             f.write(content)
