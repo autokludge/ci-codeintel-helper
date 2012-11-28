@@ -19,6 +19,16 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
             if 'index.php' in contents:
                 self.root = folder
                 break
+
+            else:
+                for content in contents:
+                    dir = folder + '/' + content + '/'
+
+                    if os.path.isdir(dir):
+                        dir_contents = os.listdir(dir)
+                        if 'index.php' in dir_contents:
+                            self.root = dir
+                            break
         if not hasattr(self, 'root'):
             sublime.status_message('Could not find project root')
             return
