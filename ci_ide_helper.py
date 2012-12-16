@@ -53,6 +53,8 @@ contents = """<?php  die('This file is not really here!');
  */
 class CI_Controller{}
 
+class MY_Controller extends CI_Controller {};
+
 /**
  * @property CI_DB_active_record $db              This is the platform-independent base Active Record implementation class.
  * @property CI_DB_forge $dbforge                 Database Utility Class
