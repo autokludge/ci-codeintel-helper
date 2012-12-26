@@ -58,6 +58,26 @@ class GenerateCodeintelHelperCommand(sublime_plugin.WindowCommand):
             rep = ' * @property %s $%s    User Defined model\n */\nc' % (model_class, model_var)
             content = content.replace(' */\nc', rep)
 
+        # get libraries names
+        lib_dirs = [x[0] for x in os.walk(os.path.join(self.root, 'application')) if 'libraries' in x[0]]
+        libs = []
+        for lib_dir in lib_dirs:
+            files = os.listdir(lib_dir)
+            for f in files:
+                if f[-4:] == '.php':
+                    libs.append(f[:-4])
+
+        # add in user libs
+        rep = ' * ==============START USER DEFINED LIBRARIES===============\n */\nc'
+        content = content.replace(' */\nc', rep)
+
+        for lib in libs:
+            lib_class = ''.join([lib[0].upper(), lib[1:]])
+            lib_var = lib
+
+            rep = ' * @property %s $%s    User Defined lib\n */\nc' % (lib_class, lib_var)
+            content = content.replace(' */\nc', rep)
+
         # write helper file
         with open(os.path.join(self.root, 'ci_ide_helper.php'), 'w') as f:
             f.write(content)
